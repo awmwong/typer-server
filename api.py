@@ -32,25 +32,48 @@ class BaseHandler(webapp2.RequestHandler):
 		self.response.headers['Content-Type' ] = 'application/json'
 		self.response.out.write( to_json(data, separators=(',',':')) )
 
+# Models
+class User(ndb.Model):
+	username = ndb.StringProperty()
+	push_token = ndb.StringProperty()
 
+class Game(ndb.Model):
+	username = ndb.StringProperty()
+	score = ndb.IntegerProperty()
+	duration = ndb.IntegerProperty()
+	bubbles = ndb.IntegerProperty()
+	bombs = ndb.IntegerProperty()
+	freezes = ndb.IntegerProperty()
+	lifes = ndb.IntegerProperty()
 
-# User data
+	def serialize(self):
+		data = self.to_dict()
+		return data
 
-def verify_user(anonymous_id, host, signed_data):
-	#TODO
-	return False
+# APIs
+class GetUserGames(BaseHandler):
+	def post(self):
+		games = Game.query(Game.username == self.params['username'])
+		data = [game.serialize() for game in games]
+		return data
 
-#TODO: add user model
-
-
-
-#TODO: add api handlers
-
-
+class CreateGame(BaseHandler):
+	def post(self):
+		print self.params['username']
+		game = Game()
+		game.username = self.params['username']
+		game.score = self.params['score']
+		game.duration = self.params['duration']
+		game.bubbles = self.params['bubbles']
+		game.bombs = self.params['bombs']
+		game.freezes = self.params['freezes']
+		game.lifes = self.params['lifes']
+		game.put()
 
 # Router
 
 app = webapp2.WSGIApplication([
-	#TODO: add api methods
 	(r'/health', HealthHandler),
+	(r'/games', GetUserGames),
+	(r'/game/create', CreateGame),
 ], debug=False)

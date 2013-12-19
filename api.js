@@ -1,5 +1,5 @@
-var MyService = function () {
-	var API_URL = 'https://myservice.appspot.com/',
+var TyperAPI = function () {
+	var API_URL = 'http://192.168.0.19:8080',
 		TIMEOUT = 25 * 1000;
 
 	return makeAPICall;
