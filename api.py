@@ -73,6 +73,7 @@ class CreateGame(BaseHandler):
 		game.freezes = self.params['freezes']
 		game.lifes = self.params['lifes']
 		game.put()
+		self.respond({})
 
 # Router
 
