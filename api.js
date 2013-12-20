@@ -1,5 +1,5 @@
 var TyperAPI = function () {
-	var API_URL = 'http://192.168.0.19:8080',
+	var API_URL = 'http://192.168.0.20:8080',
 		TIMEOUT = 25 * 1000;
 
 	return makeAPICall;

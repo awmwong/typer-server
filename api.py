@@ -47,19 +47,23 @@ class Game(ndb.Model):
 	lifes = ndb.IntegerProperty()
 
 	def serialize(self):
-		data = self.to_dict()
-		return data
+		return { 'username' : self.username, 'score': self.score }
 
 # APIs
+class GetAllGames(BaseHandler):
+	def post(self):
+		games = Game.query().order(-Game.score)
+		data = [game.serialize() for game in games]
+		self.respond(data)
+
 class GetUserGames(BaseHandler):
 	def post(self):
-		games = Game.query(Game.username == self.params['username'])
+		games = Game.query(Game.username == self.params['username']).order(-Game.score)
 		data = [game.serialize() for game in games]
-		return data
+		self.respond(data)
 
 class CreateGame(BaseHandler):
 	def post(self):
-		print self.params['username']
 		game = Game()
 		game.username = self.params['username']
 		game.score = self.params['score']
@@ -76,4 +80,5 @@ app = webapp2.WSGIApplication([
 	(r'/health', HealthHandler),
 	(r'/games', GetUserGames),
 	(r'/game/create', CreateGame),
+	(r'/allgames', GetAllGames),
 ], debug=False)
