@@ -53,12 +53,16 @@ class Game(ndb.Model):
 # APIs
 class GetUserGames(BaseHandler):
 	def post(self):
+                self.response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+                self.response.headers['Access-Control-Allow-Origin' ] = '*'
 		games = Game.query(Game.username == self.params['username'])
 		data = [game.serialize() for game in games]
-		return data
+                return data
 
 class CreateGame(BaseHandler):
 	def post(self):
+                self.response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+                self.response.headers['Access-Control-Allow-Origin' ] = '*'
 		print self.params['username']
 		game = Game()
 		game.username = self.params['username']
