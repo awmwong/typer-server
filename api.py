@@ -24,6 +24,13 @@ class BaseHandler(webapp2.RequestHandler):
 		self.params = from_json(self.request.body)
 		return value
 
+    def options(self, *args, **kwargs):
+        self.response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        self.response.headers['Access-Control-Allow-Origin' ] = '*'
+        self.response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        self.response.headers['Cache-Control'] = 'no-cache'
+        self.response.out.write('')
+
 	# Send response JSON object
 	def respond(self, data):
 		self.response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
